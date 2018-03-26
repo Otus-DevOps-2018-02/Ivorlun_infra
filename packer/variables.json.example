@@ -1,0 +1,7 @@
+{ 
+  "variables": { 
+    "proj_id": "infra-444444",
+    "src_image_family": "centos-7",
+    "machine_type": "f1-micro"
+  }
+}
