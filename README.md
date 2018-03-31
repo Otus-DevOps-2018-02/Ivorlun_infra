@@ -1,8 +1,25 @@
 # Ivorlun_infra
 Ivorlun Infra repository
 ___
+## Packer Homework
 
+* Добавлены скрипты для packer-а, позволяющие разворачивать
+инфраструктуру для приложений использующих связку ruby+mongodb, в частности 
+puma-server.
+
+* Добавлен immutable-шаблон packer-а для развёртки "baked" - образа со встроенным Reddit-app приложением
+на основе bash-скрипта `packer/files/deploy_reddit_full.sh`.
+
+* Добавлен скрипт для gcloud, запускающий создание и деплой полного "backed" образа - `config-scripts/create-reddit-vm.sh`.
+
+* Переменные в шаблонах параметризованы - их нужно задавать либо через командную строку 
+либо использовать внешний файл (пример `variables.json.example` присутствует в репозитории).
+
+p.s. variables.json добавлен в .gitignore
+
+___
 testapp_IP = 35.204.251.33
+
 testapp_port = 9292
 
 ##  GCP instance creation startup script
@@ -24,7 +41,7 @@ gcloud compute instances create reddit-app\
 ## GCP firewall rule
 Копировать команду из интерфейса слишком просто - [doc](https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules/create "Google Cloud SDK API") =) 
 ```
-gcloud compute --project=infra-198317 firewall-rules create default-puma-server --allow=tcp:9292 --target-tags=puma-server --direction=IN
+gcloud compute --project=infra-198317 firewall-rules create default-puma-server --allow=tcp:9292 --target-tags=puma-server
 ```
 ___
 
