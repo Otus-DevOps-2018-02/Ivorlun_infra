@@ -1,5 +1,14 @@
 # Ivorlun_infra
-Ivorlun Infra repository
+Ivorlun otus infrastructure repository
+
+[![Build Status](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra.svg?branch=master)](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra)
+___
+## Terraform 1
+
+* Создан шаблон terraform для развёртки и управления конфигурацией инстанса reddit-app, а также для создания и управления правилом firewall-а. 
+Шаблон параметризован и отформатирован.
+
+
 ___
 ## Packer Homework
 
