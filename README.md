@@ -8,7 +8,7 @@ ___
 puma-server.
 
 * Добавлен immutable-шаблон packer-а для развёртки "baked" - образа со встроенным Reddit-app приложением
-на основе bash-скрипта `packer/files/deploy_reddit_full.sh`.
+на основе образа reddit-base и bash-скрипта `packer/files/deploy_reddit_full.sh` с использованием systemd для puma.
 
 * Добавлен скрипт для gcloud, запускающий создание и деплой полного "backed" образа - `config-scripts/create-reddit-vm.sh`.
 
