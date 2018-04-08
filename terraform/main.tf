@@ -12,6 +12,14 @@ resource "google_compute_instance" "app" {
 
   metadata {
     ssh-keys = "appuser:${file(var.public_key_path)}"
+
+        #ssh-keys = "appuser1:${file(var.public_key_path)}"
+        #
+        #ssh-keys = "appuser2:${file(var.public_key_path)}"
+        #
+        #ssh-keys = "appuser3:${file(var.public_key_path)}"
+        #
+        #ssh-keys = "appuser4:${file(var.public_key_path)}"
   }
 
   # определение загрузочного диска

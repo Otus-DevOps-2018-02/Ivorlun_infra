@@ -8,6 +8,23 @@ ___
 * Создан шаблон terraform для развёртки и управления конфигурацией инстанса reddit-app, а также для создания и управления правилом firewall-а. 
 Шаблон параметризован и отформатирован.
 
+#### Задание со * про ssh-keys
+
+После развёртки инстанса он доступен по `ssh appuser@<adress> -i ~/.ssh/appuser`.
+
+Добавление ключа только в metadata для нового пользователя appuser1 приводит к тому что terraform сообщает: обновляю текущий публичный ключ у appuser in-place, что совсем не то, к чему стремиться пользователь terraform.
+
+На самом же деле у appuser-a удаляется файл authorized_keys(!), создаётся пользователь appuser1 и ему добавляется доступ по ключу. Инстанс перестаёт быть доступен для appuser.
+
+Далее при добавлении новых пользователей appuser2-4 таким же образом, terraform говорит что обновит ключ пользователя appuser1 на ключ пользователя appuser4 (???). На самом деле инстанс становиться запечатан т.к. ни один пользователь не может подключиться. Пользователи 2-3 не создаются, у appuser1 так же удаляется authorized_keys, но добавляется для 4.
+Тем не менее подключиться невозможно.
+
+Пересоздание инстанса приводит к тому что создание невозможно т.к. connection user для provisioner-ов appuser, а добавляется ключ только appuser4
+
+Судя по всему это связано с https://www.terraform.io/docs/providers/google/r/compute_project_metadata.html
+
+где написано:
+>Note: If you want to manage only single key/value pairs within the project metadata rather than the entire set, then use google_compute_project_metadata_item.
 
 ___
 ## Packer Homework
