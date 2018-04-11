@@ -1,5 +1,5 @@
 # Ivorlun_infra
-Ivorlun otus infrastructure repository
+Ivorlun infrastructure repository
 
 [![Build Status](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra.svg?branch=master)](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra)
 ___
@@ -8,23 +8,35 @@ ___
 * Создан шаблон terraform для развёртки и управления конфигурацией инстанса reddit-app, а также для создания и управления правилом firewall-а. 
 Шаблон параметризован и отформатирован.
 
-#### Задание со * про ssh-keys
+### Задание со * про ssh-keys
 
-После развёртки инстанса он доступен по `ssh appuser@<adress> -i ~/.ssh/appuser`.
+После развёртки инстанса он доступен по `ssh appuser@<address> -i ~/.ssh/appuser`.
 
-Добавление ключа только в metadata для нового пользователя appuser1 приводит к тому что terraform сообщает: обновляю текущий публичный ключ у appuser in-place, что совсем не то, к чему стремиться пользователь terraform.
+Добавление ключа в metadata для нового пользователя appuser1 приводит к тому что terraform сообщает: обновляю текущий публичный ключ у appuser in-place, что совсем не то, к чему стремиться пользователь terraform.
 
 На самом же деле у appuser-a удаляется файл authorized_keys(!), создаётся пользователь appuser1 и ему добавляется доступ по ключу. Инстанс перестаёт быть доступен для appuser.
 
-Далее при добавлении новых пользователей appuser2-4 таким же образом, terraform говорит что обновит ключ пользователя appuser1 на ключ пользователя appuser4 (???). На самом деле инстанс становиться запечатан т.к. ни один пользователь не может подключиться. Пользователи 2-3 не создаются, у appuser1 так же удаляется authorized_keys, но добавляется для 4.
-Тем не менее подключиться невозможно.
+Далее при добавлении новых пользователей appuser2-4 таким же образом, terraform говорит что обновит имя пользователя ключа с appuser1 на имя последнего пользователя из списка metadata (ex.:appuser4). Создаётся только последний пользователь списка и ему добавляется доступ по публичному ключу, у appuser1 так же удаляется authorized_keys.
 
-Пересоздание инстанса приводит к тому что создание невозможно т.к. connection user для provisioner-ов appuser, а добавляется ключ только appuser4
+Пересоздание инстанса приводит к тому что развёртка невозможна т.к. connection username != ssh-key username.
 
-Судя по всему это связано с https://www.terraform.io/docs/providers/google/r/compute_project_metadata.html
+При добавлении пользователя appuser_web через google cloud console приводит к добавлению доступа по ключу ко всем экземплярам ВМ в проекте.
 
-где написано:
->Note: If you want to manage only single key/value pairs within the project metadata rather than the entire set, then use google_compute_project_metadata_item.
+##### Solution:
+
+Судя по всему проблема кроется в том, что сущность [metadata](https://www.terraform.io/docs/providers/google/r/compute_instance.html#metadata) ресурса [google_compute_instance](https://www.terraform.io/docs/providers/google/r/compute_instance.html)  в terraform является [google_compute_project_metadata_item](https://www.terraform.io/docs/providers/google/r/compute_project_metadata_item.html) и может оперировать только одной парой ключ-значение, из-за чего и происходит перезапись, а не добавление ключей.  
+
+Для больших массивов нужно использовать [google_compute_project_metadata](https://www.terraform.io/docs/providers/google/r/compute_project_metadata.html).
+
+
+### Задание с ** про load-balancer
+
+Создан load-balancer перенаправляющий запросы со своего адреса на один из инстансов reddit-app.
+
+Проблемой конфигурации в которой жётско заданы два инстанса будет масштабирование, и в случае неполадок на одном, второй окажется сильно перегружен.
+К тому же код, описывающий инфраструктуру - дублируется.
+
+В итоге сделан динамический балансировщик, принимающий в качестве параметра количество желаемых инстансов.
 
 ___
 ## Packer Homework
