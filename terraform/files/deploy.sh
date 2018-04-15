@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 set -e
 
 APP_DIR=${1:-$HOME}
@@ -10,4 +10,3 @@ bundle install
 sudo mv /tmp/puma.service /etc/systemd/system/puma.service
 sudo systemctl start puma
 sudo systemctl enable puma
-
