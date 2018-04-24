@@ -21,7 +21,21 @@ resource "google_compute_instance" "app" {
   metadata {
     ssh-keys = "appuser:${file(var.public_key_path)}"
   }
+
+  provisioner "remote-exec" {
+    inline = [ "export  DATABASE_URL=${google_compute_instance.db.network_interface.0.address}:27017",]
+  }
+
+  provisioner "file" {
+    source      = "files/puma.service"
+    destination = "/tmp/puma.service"
+  }
+
+  provisioner "remote-exec" {
+    script = "files/deploy.sh"
+  }
 }
+
 
 resource "google_compute_address" "app_ip" {
   name = "reddit-app-ip"

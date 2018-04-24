@@ -2,6 +2,24 @@
 Ivorlun infrastructure repository
 
 [![Build Status](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra.svg?branch=master)](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra)
+
+___
+## Terraform 2
+
+* Шаблоны, созданные в прошлом задании разбиты на логические сущности в виде модулей и оптимизированы. 
+* Использован модуль gcs bucket из Terraform registry.
+* Шаблоны разбиты на две вариации окружения - stage и prod
+
+### Задание со * Remote backends
+
+* В gcloud вручную(не терраформом) создан storage для синхронизации tfstate
+* При подключении rb terraform предложил перенести файлы состояния в облако. Благодаря этому при запуске из любых мест состояние всегда синхронизировано.
+* При одновременной попытке прменить изменения во втором случае возникает ошибка `Error locking state: Error acquiring the state lock` которая указывает на то, кто и как изменяет состояние системы.
+
+### Задание со * app deploy
+
+* 
+* 
 ___
 ## Terraform 1
 
