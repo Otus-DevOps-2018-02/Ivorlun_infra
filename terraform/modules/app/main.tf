@@ -23,7 +23,7 @@ resource "google_compute_instance" "app" {
   }
 
   provisioner "remote-exec" {
-    inline = [ "export  DATABASE_URL=${google_compute_instance.db.network_interface.0.address}:27017",]
+    inline = [ "export  DATABASE_URL=${var.db_internal_ip}:27017",]
   }
 
   provisioner "file" {

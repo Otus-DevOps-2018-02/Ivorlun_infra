@@ -10,3 +10,7 @@ variable app_disk_image {
   description = "Disk image for reddit app"
   default     = "reddit-app-base"
 }
+
+variable db_internal_ip {
+  description = "DB internal network ip"
+}
