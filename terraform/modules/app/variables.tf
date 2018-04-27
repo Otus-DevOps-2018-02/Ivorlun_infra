@@ -2,6 +2,10 @@ variable public_key_path {
   description = "Path to the public key used to connect to instance"
 }
 
+variable private_key_path {
+  description = "Path to the private key used to connect to instance"
+}
+
 variable zone {
   description = "Zone"
 }
@@ -13,4 +17,9 @@ variable app_disk_image {
 
 variable db_internal_ip {
   description = "DB internal network ip"
+}
+
+variable deployment_trigger {
+  description = "Turn off/on app deployment to app instance"
+  default     = "true"
 }
