@@ -46,7 +46,7 @@ resource "null_resource" "app_itself" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/files/puma.service.rendered"
+    content     = "${data.template_file.puma_service.rendered}"
     destination = "/tmp/puma.service"
   }
 
