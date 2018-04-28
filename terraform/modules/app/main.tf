@@ -23,6 +23,14 @@ resource "google_compute_instance" "app" {
   }
 }
 
+data "template_file" "puma_service" {
+  template = "${file("${path.module}/files/puma.service")}"
+
+  vars {
+    mongodb_int_address = "${var.db_internal_ip}"
+  }
+}
+
 resource "null_resource" "app_itself" {
   depends_on = ["google_compute_instance.app"]
 
@@ -37,14 +45,8 @@ resource "null_resource" "app_itself" {
     private_key = "${file(var.private_key_path)}"
   }
 
-  provisioner "remote-exec" {
-    inline = ["export  DATABASE_URL=${var.db_internal_ip}:27017",
-      "echo 'DATABASE_URL=${var.db_internal_ip}:27017' >> ~/.bashrc",
-    ]
-  }
-
   provisioner "file" {
-    source      = "${path.module}/files/puma.service"
+    source      = "${path.module}/files/puma.service.rendered"
     destination = "/tmp/puma.service"
   }
 
