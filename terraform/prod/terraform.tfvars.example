@@ -1,0 +1,5 @@
+project = "thank_you"
+disk_image = "express42"
+app_zone = "for_great_homeworks404-wq!"
+public_key_path = "~/.ssh/appuser.pub"
+private_key_path = "~/.ssh/appuser"

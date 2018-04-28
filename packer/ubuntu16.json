@@ -1,7 +1,7 @@
 {
     "variables": { 
         "proj_id": null,
-        "ssh_user": null,
+        "ssh_username": null,
         "src_image_family": null,
         "machine_type": null
         },
@@ -11,7 +11,7 @@
         "image_name": "reddit-base-{{timestamp}}",
         "image_family": "reddit-base",
         "zone": "europe-west4-b",
-        "ssh_username": "{{user `ssh_user`}}",
+        "ssh_username": "{{user `ssh_username`}}",
         "disk_size": "10",
         "disk_type": "pd-standard",
         "tags": "puma-server",
