@@ -4,6 +4,19 @@ Ivorlun infrastructure repository
 [![Build Status](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra.svg?branch=master)](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra)
 
 ___
+## Ansible 1
+
+* После первого исполнения плэйбука состояние хостов группы app не изменяется из-за того, что новейший репозиторий уже есть в данном каталоге. 
+
+* Команда `ansible app -m command -a 'rm -rf ~/reddit'` выполняет удаление на всех хостах группы app директории $HOME/reddit. 
+Из-за этого повторный запуск плэйбука возвращает: `appserver : ok=2    changed=1    unreachable=0    failed=0`.
+Это значит, что плэйбук был исполнен успешно, при этом состояние хоста изменилось после выполнения этого плэйбука.
+
+### Задание со * JSON
+
+* 
+
+___
 ## Terraform 2
 
 * Шаблоны, созданные в прошлом задании разбиты на логические сущности в виде модулей и оптимизированы. 
