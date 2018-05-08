@@ -21,5 +21,5 @@ variable db_internal_ip {
 
 variable deployment_trigger {
   description = "Turn on/off app deployment to app instance"
-  default     = "true"
+  default     = "false"
 }

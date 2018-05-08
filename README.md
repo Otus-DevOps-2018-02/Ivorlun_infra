@@ -4,6 +4,32 @@ Ivorlun infrastructure repository
 [![Build Status](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra.svg?branch=master)](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra)
 
 ___
+## Ansible 2
+
+### Основная часть ДЗ
+
+###ОШИБКА!
+Хэндлер для app-hosts из gist в hw10.pdf на 49 и на 53 странице содержит ошибку __reloaded__:
+```
+  handlers:
+  - name: reload puma
+    systemd: name=puma state=reloaded
+```
+выдаёт следующующее:
+```
+fatal: [appserver]: FAILED! => {"changed": false, "msg": "Unable to reload service puma: Failed to reload puma.service: Job type reload is not applicable for unit puma.service.\nSee system logs and 'systemctl status puma.service' for details.\n"}
+```
+Потому что в unit-файле нет `ExecReload`; должно быть `state=restarted`.
+Плюс ко всему требуется `systemctl daemon-reload`, из-за того что сервис уже зарегестрирован, но на диске обновился т.е. `daemon_reload: yes`.
+
+
+### Задание со * Dynamic inventory для GCP
+
+* 
+
+___
+
+___
 ## Ansible 1
 
 * Добавлена конфигурация ansible для хостов app и db reddit-app
