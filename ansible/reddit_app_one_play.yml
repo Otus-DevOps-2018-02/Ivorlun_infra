@@ -4,6 +4,7 @@
   vars:
     mongo_bind_ip: 0.0.0.0
     db_host: 10.132.0.2
+  
   tasks:
     - name: Change mongo config file
       become: true
@@ -32,10 +33,10 @@
       become: true
       systemd: name=puma enabled=yes
       tags: app-tag
-    
+
     - name: Fetch the latest version of application code
       git:
-        repo: 'https://github.com/express42/reddit.git'
+        repo: 'https://github.com/Otus-DevOps-2017-11/reddit.git'
         dest: /home/appuser/reddit
         version: monolith
       tags: deploy-tag
@@ -55,8 +56,7 @@
   - name: reload puma
     become: true
     systemd: name=puma state=restarted
-  
+
   - name: restart puma
     become: true
     systemd: name=puma state=restarted
-      
