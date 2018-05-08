@@ -6,8 +6,6 @@ Ivorlun infrastructure repository
 ___
 ## Ansible 2
 
-### Основная часть ДЗ
-
 ###ОШИБКА!
 Хэндлер для app-hosts из gist в hw10.pdf на 49 и на 53 странице содержит ошибку __reloaded__:
 ```
@@ -22,6 +20,14 @@ fatal: [appserver]: FAILED! => {"changed": false, "msg": "Unable to reload servi
 Потому что в unit-файле нет `ExecReload`; должно быть `state=restarted`.
 Плюс ко всему требуется `systemctl daemon-reload`, из-за того что сервис уже зарегестрирован, но на диске обновился т.е. `daemon_reload: yes`.
 
+Так же надо отметить, что если в данный момент созданные терраформом хосты уничтожены, то с ними уничтожено и правило, которе позволяет ssh-connect.
+
+### Основная часть ДЗ
+
+* Конфигурация приложения разбита по соответствующим playbook-ам
+* Изучены и использованы механизмы handler-ов и tag-ов
+* Provisioner-ы packer-а сменены с bash-скриптов на ansible
+* Template-images пересобраны и проверены
 
 ### Задание со * Dynamic inventory для GCP
 

@@ -1,0 +1,25 @@
+---
+- name: Configure mongoDB server image
+  hosts: all
+  become: true
+  tasks:
+    - name: Add an apt key for mongoDB from ubuntu keyserver
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: EA312927
+
+    - name: Add mongodb repo to apt source list
+      apt_repository:
+        repo: deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse
+        state: present
+        filename: mongodb-org-3.2
+
+    - name: Install mongoDB-server
+      apt:
+        name: mongodb-org
+        state: present
+        autoclean: yes
+        autoremove: yes
+    
+    - name: Enable mongoDB service
+      systemd: name=mongod enabled=yes

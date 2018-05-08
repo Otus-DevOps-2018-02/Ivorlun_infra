@@ -1,0 +1,16 @@
+---
+- name: Configure ruby server image
+  hosts: all
+  become: true
+  tasks:
+    - name: Install build-essential and ruby with bundler
+      apt:
+        state: present
+        autoclean: yes
+        autoremove: yes
+        update_cache: yes
+        name: "{{ item }}"
+      with_items:
+        - build-essential
+        - ruby-full
+        - ruby-bundler
