@@ -33,10 +33,7 @@ data "template_file" "puma_service" {
 
 resource "null_resource" "app_itself" {
   depends_on = ["google_compute_instance.app"]
-
-  triggers {
-    deployment_trigger = "${var.deployment_trigger ? true : false}"
-  }
+  count      = "${var.deployment_trigger ? 1 : 0}"
 
   connection {
     type        = "ssh"
