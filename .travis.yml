@@ -5,35 +5,29 @@ before_install:
 - curl https://raw.githubusercontent.com/express42/otus-homeworks/2018-02/run.sh |
   bash
 
-#addons:
-#  apt:
-#    sources:
-#    - ansible-ansible
-#    packages:
-#    - software-properties-common
-#    - ansible
+addons:
+  apt:
+    sources:
+    - ansible-ansible
+    packages:
+    - software-properties-common
+    - ansible
 
 install:
-- whoami
-- sudo whoami
-- unzip -v
-#- apt-get update -qq && apt-get install -y software-properties-common && \
-#  apt-add-repository -y ppa:ansible/ansible && apt-get update && \
-#  apt-get install -y unzip ansible
-#- curl -LO https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip && \
-#  unzip packer*.zip && mv -v packer /usr/local/bin/ && rm packer*
-#- curl -LO https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip && \
-#  unzip terraform*.zip && mv -v terraform /usr/local/bin/ && rm terraform*
-#- curl -LO https://github.com/wata727/tflint/releases/download/v0.5.4/tflint_linux_amd64.zip && \
-#  unzip tflint*.zip && mv -v tflint /usr/local/bin/ && rm tflint*
+- apt-get update -qq && apt-get install -y software-properties-common && \
+  apt-add-repository -y ppa:ansible/ansible && apt-get update && \
+  apt-get install -y ansible
+- curl -LO https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip && \
+  unzip packer*.zip && sudo mv -v packer /usr/local/bin/ && rm packer*
+- curl -LO https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip && \
+  unzip terraform*.zip && sudo mv -v terraform /usr/local/bin/ && rm terraform*
+- curl -LO https://github.com/wata727/tflint/releases/download/v0.5.4/tflint_linux_amd64.zip && \
+  unzip tflint*.zip && sudo mv -v tflint /usr/local/bin/ && rm tflint*
 
 script:
-- whoami
-- sudo whoami
-- unzip -v
-#- bash packer_validate.sh
-#- bash terraform tests.sh
-#- bash ansible_lint.sh
+- bash packer_validate.sh
+- bash terraform tests.sh
+- bash ansible_lint.sh
 
 
 notifications:
