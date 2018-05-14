@@ -9,8 +9,8 @@ while true ; do
     case "$1" in
         -l|--list)
             case "$2" in
-                "") PATH=./inventory.json && /bin/cat $PATH || usage ; shift 2 ;;
-                *) PATH=$2 && /bin/cat $PATH || usage ; shift 2 ;;
+                "") INV_PATH=./inventory.json && /bin/cat $INV_PATH || usage ; shift 2 ;;
+                *) INV_PATH=$2 && /bin/cat $INV_PATH || usage ; shift 2 ;;
             esac ;;
         -h|--host)
             case "$2" in

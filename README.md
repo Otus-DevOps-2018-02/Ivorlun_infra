@@ -4,6 +4,47 @@ Ivorlun infrastructure repository
 [![Build Status](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra.svg?branch=master)](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra)
 
 ___
+## Ansible 2
+
+###ОШИБКИ!
+Хэндлер для app-hosts из gist в hw10.pdf на 49 и на 53 странице содержит ошибку __state=reloaded__:
+```
+  handlers:
+  - name: reload puma
+    systemd: name=puma state=reloaded
+```
+выдаёт следующующее:
+```
+fatal: [appserver]: FAILED! => {"changed": false, "msg": "Unable to reload service puma: Failed to reload puma.service: Job type reload is not applicable for unit puma.service.\nSee system logs and 'systemctl status puma.service' for details.\n"}
+```
+Потому что в unit-файле нет `ExecReload`; должно быть `state=restarted`.
+Также лучше сделать `systemctl daemon-reload`, например если сервис уже зарегестрирован (не сработал триггер террформ), но на диске unit-файл обновился т.е. `daemon_reload: yes`, иначе изменений не произойдёт.
+
+Так же надо отметить, что если в данный момент созданные терраформом хосты уничтожены, то с ними уничтожено и правило, которе позволяет ssh-connect.
+
+Страница 35 в pdf:
+`repo: 'https://github.com/express42/reddit.git'`
+А Travis CI проверяет diff и должно быть почему-то
+`repo: 'https://github.com/Otus-DevOps-2017-11/reddit.git'`
+Стоит отметить что первый репо актуальнее на данный момент.
+
+### Основная часть ДЗ
+
+* Конфигурация приложения разбита по соответствующим playbook-ам
+* Изучены и использованы механизмы handler-ов и tag-ов
+* Provisioner-ы packer-а сменены с bash-скриптов на ansible
+* Template-images пересобраны и проверены
+
+### Задание со * Dynamic inventory для GCP
+
+* Написан неуклюжий скрипт, который импортирует хосты из GCP в ansible inventory.
+* Динамический инвентори выгружает все внешние адреса хостов, ставит их в соответствие с именем и группирует по тэгу.
+* Для работы требуется gcloud auth plugin и проект по умолчанию.
+* Этот скрипт используется в качестве inventory по умолчанию
+
+___
+
+___
 ## Ansible 1
 
 * Добавлена конфигурация ansible для хостов app и db reddit-app
