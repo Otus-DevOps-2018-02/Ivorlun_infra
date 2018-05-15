@@ -8,11 +8,11 @@ before_install:
 install:
 - sudo pip install ansible-lint
 - sudo curl -LO https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip
-- sudo unzip packer*.zip -d /usr/local/bin/
+- sudo unzip -o packer*.zip -d /usr/local/bin/
 - sudo curl -LO https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
-- sudo unzip terraform*.zip -d /usr/local/bin/
+- sudo unzip -o terraform*.zip -d /usr/local/bin/
 - sudo curl -LO https://github.com/wata727/tflint/releases/download/v0.5.4/tflint_linux_amd64.zip
-- sudo unzip tflint*.zip -d /usr/local/bin/
+- sudo unzip -o tflint*.zip -d /usr/local/bin/
 - sudo rm *.zip
 
 script:
