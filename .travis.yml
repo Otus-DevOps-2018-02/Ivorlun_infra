@@ -6,11 +6,7 @@ before_install:
   bash
 
 install:
-- sudo apt-get update -qq
-- sudo apt-get install -y software-properties-common
-- sudo apt-add-repository -y ppa:ansible/ansible 
-- sudo apt-get update -qq
-- sudo apt-get install -y ansible-lint
+- sudo pip install ansible-lint
 - sudo curl -LO https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip
 - sudo unzip packer*.zip -d /usr/local/bin/
 - sudo curl -LO https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
@@ -20,12 +16,10 @@ install:
 - sudo rm *.zip
 
 script:
-- bash packer_vali
-- ansible-lint --version
-- packer --version
-- terraform --version
-- tflint --version
-
+- cd tests
+- bash packer_validate.sh
+- bash terraform_tests.sh
+- bash ansible_lint.sh
 
 notifications:
   slack:
