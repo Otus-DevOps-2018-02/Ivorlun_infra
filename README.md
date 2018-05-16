@@ -3,10 +3,39 @@ Ivorlun infrastructure repository
 
 [![Build Status](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra.svg?branch=master)](https://travis-ci.org/Otus-DevOps-2018-02/Ivorlun_infra)
 
+
+___
+## Ansible 3
+
+* Вопрос про терраформ - есть ли возможность без костылей сделать source_ranges var в terraform prod автоматическим?
+Что-то вида `source_ranges=${"$(/usr/bin/curl ifconfig.me)/32"}`.
+Тогда не придётся постоянно лезть в настройку переменной.
+Насколько я понимаю сейчас есть варианты [external data source](https://www.terraform.io/docs/providers/external/data_source.html) и проброски output as input или же явно передавать `terraform aaply -var 'source_ranges=...`.
+
+### Основная часть
+
+* Исправлены шаблоны пакера - `{{template_dir}}`
+* Инфраструктурный код переписан в соответствии с best practices и разделён по ролям
+* Добавлена роль nginx, перенаправляющая приложение с 9292 на 80 порт
+* Использован ansible vault для шифровки параметров в роли создания пользователей окружения
+* Мелкие исправления
+
+
+### Задание со * Dynamic inventory for stage and prod
+
+* Динамический инветори и без задания использовался как основной - так как удобно =)
+* Файл переименован в более понятное название
+
+### Задание с ** TravisCI infrastructure tests
+
+* Изучены некторые азы Travis CI
+* Дописан ci-скрипт для проверки инфраструктурного кода
+
+
 ___
 ## Ansible 2
 
-###ОШИБКИ!
+### ОШИБКИ!
 Хэндлер для app-hosts из gist в hw10.pdf на 49 и на 53 странице содержит ошибку __state=reloaded__:
 ```
   handlers:

@@ -24,7 +24,7 @@
     "provisioners": [
         {
         "type": "shell",
-        "script": "files/deploy_reddit_full.sh",
+        "script": "{{template_dir}}/files/deploy_reddit_full.sh",
         "execute_command": "sudo {{.Path}}"
         }
     ]

@@ -4,6 +4,23 @@ language: bash
 before_install:
 - curl https://raw.githubusercontent.com/express42/otus-homeworks/2018-02/run.sh |
   bash
+
+install:
+- sudo pip install ansible-lint
+- sudo curl -LO https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip
+- sudo unzip -o packer*.zip -d /usr/local/bin/
+- sudo curl -LO https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+- sudo unzip -o terraform*.zip -d /usr/local/bin/
+- sudo curl -LO https://github.com/wata727/tflint/releases/download/v0.5.4/tflint_linux_amd64.zip
+- sudo unzip -o tflint*.zip -d /usr/local/bin/
+- sudo rm *.zip
+
+script:
+- cd tests
+- bash packer_validate.sh
+- bash terraform_tests.sh
+- bash ansible_lint.sh
+
 notifications:
   slack:
     secure: btXVYEODp64HhXcXBhCJ6qi4ghuGj2WXUHgh/MqP+AAGj71J5Ai2wAc/VWdh5S4RavLX0bwkA1HxvtLg9amzsDEvbcBmBwBOpKiZl5JLXu73ARTymU2HEAHUFmt0y411M9IH9syeX6KAr26264lyLY3I21naaVSgGpAbTjO4chhKqrwzUHl70fs0LN+wqcwDLIeK9VRAx4NVlQwuWLJU1fB4y5IagqX/8rBfBtrKqxJxgzarC/KU7ALcRUQbpnT/NUQVPed9LZzuJOvJYqlYXOuDxEUSpTO8YfmTlIE0CHw+6r1mhwdIC0yv1dkK/IAzhKzn3ZvYcvshb7RCmRDeLnX2IWFF+Dl7pmsXMRST10Lcd6EpHVm3mhL7AStD/ORM7/s3ZR49k7W+/yDk+0CsZduX/UOt16nRffG2DRhBSlWKs37aHEUvjHWZwMMpZ6r+5a+Tgs8vjwPd4WMSOgndn/8R68Ufn0Af1eYOS/d0nDSl8oUoD+qy/UGK6a058txMGv6Bh9hd7ghjVf4BoWht1LXa8fvNZg6fP1VWhcOHlD143M/sslFezKq/ZhiggBfK1p24slGIgl/dnqftFd+CRmFkGCWsW8onyO3FRzsg8lFc/2JXFoLshKNXGr4jQs3ejMLA+vw+8Zs8qyOlEUevMo18OpmGJh/vPbiSWpVujBE=

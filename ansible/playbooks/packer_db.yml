@@ -20,6 +20,6 @@
         state: present
         autoclean: yes
         autoremove: yes
-    
+
     - name: Enable mongoDB service
       systemd: name=mongod enabled=yes
