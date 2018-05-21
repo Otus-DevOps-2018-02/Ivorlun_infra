@@ -5,12 +5,54 @@ Ivorlun infrastructure repository
 
 
 ___
+## Ansible 4
+
+* На это задание было потрачено уйму времени из-за проблем описанных ниже.
+Из-за того что у меня основная ОС Ubuntu 18.04 bionic beaver имеет новое (на 05.2018) ядро 4.15 и некоторые изменения в либах, на ней в данный момент не работает VBox (VMware тоже).
+Поэтому данная работа выполняется на VBox on Windows 10 + vagrant on WSL ubuntu 16.04, ansible on WSL etc. 
+Идея взята отсюда - https://www.vagrantup.com/docs/other/wsl.html.
+Решение второй проблемы, с которой я столкнулся при выполнении `vagrant up` - [VERR_PATH_NOT_FOUND](https://github.com/joelhandwell/ubuntu_vagrant_boxes/issues/1#issuecomment-292370353)
+Далее столкнулся с тем, что права на файлы снаружи ubuntu-subsystem невозможно изменить на `-х` [никак](https://github.com/Microsoft/WSL/issues/81#issuecomment-207553514), в связи с чем пришлось переместить vault.key в `~/vault.key` и там уже сменить права - иначе ansible принимал vault.key за скрипт.
+И последняя проблема была вновь связана с COM-портом VirtualBox - при выполнении `molecule --debug create`, не воздавался инстанс.
+Решить мне её удалось только с помощью обновлённой документации - нужно добавить `provider_raw_config_args` в секцию `platforms` в `molecule.yml`:
+```platforms:
+  - name: instance
+    box: ubuntu/xenial64
+    provider_raw_config_args:
+      - customize [ 'modifyvm', :id, '--uartmode1', 'disconnected' ]
+```
+До этого я пытался с помощью [raw_config_args](https://github.com/metacloud/molecule/issues/424#issuecomment-244283947), но этот ключ похоже устарел.
+* Страница 46 pdf: при смене пользователя с ubuntu на vagrant происходит замена unit-файла systemd, но при этом, в нашей конфигурации, в handler не прописан рестарт systemctl daemon.
+Мне кажется было бы логичным при любом деплое шаблона с любым unit-файлом обязательно в хэндлере писать `daemon_reload=yes`.
+
+### Основная часть
+
+* Изучены основы работы с Vagrant
+* Изучена работа Vagrant+VBox на WSL
+* Добавлен базовый плэйбук для установки python по ssh
+* base.yml включён в site.yml
+* Task-и ролей app и db логически разбиты и разнесены по разным файлам
+* Параметризован пользователь для деплоя приложения
+* Протестирована работа ролей app и db в vagrant
+* Написаны тесты molecule для ролей app и db 
+
+
+### Задание со * nginx vagrant
+
+* Проксирован порт 9292 на 80 через extra_vars в Vagrantfile, чтобы приложение было доступно чисто по ip: 10.10.10.20
+
+### Задание со * db-role в отдельный репозиторий
+
+* 
+
+___
 ## Ansible 3
 
 * Вопрос про терраформ - есть ли возможность без костылей сделать source_ranges var в terraform prod автоматическим?
 Что-то вида `source_ranges=${"$(/usr/bin/curl ifconfig.me)/32"}`.
 Тогда не придётся постоянно лезть в настройку переменной.
 Насколько я понимаю сейчас есть варианты [external data source](https://www.terraform.io/docs/providers/external/data_source.html) и проброски output as input или же явно передавать `terraform aaply -var 'source_ranges=...`.
+
 
 ### Основная часть
 

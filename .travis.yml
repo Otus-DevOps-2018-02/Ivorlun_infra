@@ -16,10 +16,24 @@ install:
 - sudo rm *.zip
 
 script:
-- cd tests
-- bash packer_validate.sh
-- bash terraform_tests.sh
-- bash ansible_lint.sh
+- mkdir -p ~/.ssh
+- touch ~/.ssh/appuser
+- touch ~/.ssh/appuser.pub
+- packer validate -var-file packer/variables.json.example packer/app.json
+- packer validate -var-file packer/variables.json.example packer/db.json
+- packer validate -var-file packer/variables.json.example packer/immutable.json
+- packer validate -var-file packer/variables.json.example packer/ubuntu16.json
+- cd terraform/stage 
+- mv terraform.tfvars.example terraform.tfvars 
+- terraform init -backend=false 
+- terraform validate 
+- tflint
+- cd ../prod 
+- mv terraform.tfvars.example terraform.tfvars 
+- terraform init -backend=false && terraform validate && tflint
+- cd ../../ansible
+- ansible-lint --exclude=roles/jdauphant.nginx -x ANSIBLE0004 playbooks/*
+- cd ..
 
 notifications:
   slack:
