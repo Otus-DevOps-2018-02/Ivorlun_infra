@@ -32,7 +32,7 @@ script:
 - mv terraform.tfvars.example terraform.tfvars 
 - terraform init -backend=false && terraform validate && tflint
 - cd ../../ansible
-- ansible-lint --exclude=roles/jdauphant.nginx -x ANSIBLE0004 playbooks/*
+- ansible-lint --exclude=roles/jdauphant.nginx playbooks/*
 - cd ..
 
 notifications:

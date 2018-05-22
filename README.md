@@ -7,14 +7,14 @@ Ivorlun infrastructure repository
 ___
 ## Ansible 4
 
-* На это задание было потрачено уйму времени из-за проблем описанных ниже.
-Из-за того что у меня основная ОС Ubuntu 18.04 bionic beaver имеет новое (на 05.2018) ядро 4.15 и некоторые изменения в либах, на ней в данный момент не работает VBox (VMware тоже).
-Поэтому данная работа выполняется на VBox on Windows 10 + vagrant on WSL ubuntu 16.04, ansible on WSL etc. 
-Идея взята отсюда - https://www.vagrantup.com/docs/other/wsl.html.
-Решение второй проблемы, с которой я столкнулся при выполнении `vagrant up` - [VERR_PATH_NOT_FOUND](https://github.com/joelhandwell/ubuntu_vagrant_boxes/issues/1#issuecomment-292370353)
-Далее столкнулся с тем, что права на файлы снаружи ubuntu-subsystem невозможно изменить на `-х` [никак](https://github.com/Microsoft/WSL/issues/81#issuecomment-207553514), в связи с чем пришлось переместить vault.key в `~/vault.key` и там уже сменить права - иначе ansible принимал vault.key за скрипт.
-И последняя проблема была вновь связана с COM-портом VirtualBox - при выполнении `molecule --debug create`, не воздавался инстанс.
-Решить мне её удалось только с помощью обновлённой документации - нужно добавить `provider_raw_config_args` в секцию `platforms` в `molecule.yml`:
+* На это задание было потрачено уйма времени из-за проблем описанных ниже.
+* Из-за того что у меня основная ОС Ubuntu 18.04 bionic beaver имеет новое (на 05.2018) ядро 4.15 и некоторые изменения в либах, на ней в данный момент не работает VBox (VMware тоже).
+* Поэтому данная работа выполняется на VBox on Windows 10 + vagrant on WSL ubuntu 16.04, ansible on WSL etc. 
+* Идея взята отсюда - https://www.vagrantup.com/docs/other/wsl.html.
+* Решение второй проблемы, с которой я столкнулся при выполнении `vagrant up` - [VERR_PATH_NOT_FOUND](https://github.com/joelhandwell/ubuntu_vagrant_boxes/issues/1#issuecomment-292370353)
+* Далее столкнулся с тем, что права на файлы снаружи ubuntu-subsystem невозможно изменить на `-х` [никак](https://github.com/Microsoft/WSL/issues/81#issuecomment-207553514), в связи с чем пришлось переместить vault.key в `~/vault.key` и там уже сменить права - иначе ansible принимал vault.key за скрипт.
+* И последняя проблема была вновь связана с COM-портом VirtualBox - при выполнении `molecule --debug create`, не воздавался инстанс.
+Решить мне её удалось только с помощью [обновлённой документации](https://molecule.readthedocs.io/en/latest/configuration.html#vagrant) - нужно добавить `provider_raw_config_args` в секцию `platforms` в `molecule.yml`:
 ```platforms:
   - name: instance
     box: ubuntu/xenial64
@@ -27,6 +27,7 @@ ___
 
 ### Основная часть
 
+* Переработаны тесты packer, terraform, ansible и перенесены в travis.yml
 * Изучены основы работы с Vagrant
 * Изучена работа Vagrant+VBox на WSL
 * Добавлен базовый плэйбук для установки python по ssh
@@ -43,7 +44,7 @@ ___
 
 ### Задание со * db-role в отдельный репозиторий
 
-* 
+*  
 
 ___
 ## Ansible 3
@@ -113,7 +114,6 @@ fatal: [appserver]: FAILED! => {"changed": false, "msg": "Unable to reload servi
 * Для работы требуется gcloud auth plugin и проект по умолчанию.
 * Этот скрипт используется в качестве inventory по умолчанию
 
-___
 
 ___
 ## Ansible 1
