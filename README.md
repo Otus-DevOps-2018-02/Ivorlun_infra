@@ -22,8 +22,7 @@ ___
       - customize [ 'modifyvm', :id, '--uartmode1', 'disconnected' ]
 ```
 До этого я пытался с помощью [raw_config_args](https://github.com/metacloud/molecule/issues/424#issuecomment-244283947), но этот ключ похоже устарел.
-* Страница 46 pdf: при смене пользователя с ubuntu на vagrant происходит замена unit-файла systemd, но при этом, в нашей конфигурации, в handler не прописан рестарт systemctl daemon.
-Мне кажется было бы логичным при любом деплое шаблона с любым unit-файлом обязательно в хэндлере писать `daemon_reload=yes`.
+
 
 ### Основная часть
 
@@ -42,9 +41,6 @@ ___
 
 * Проксирован порт 9292 на 80 через extra_vars в Vagrantfile, чтобы приложение было доступно чисто по ip: 10.10.10.20
 
-### Задание со * db-role в отдельный репозиторий
-
-*  
 
 ___
 ## Ansible 3
